@@ -10,7 +10,7 @@ Se dispone de 4 archivos:
 > - ***retrasos***: información sobre el retraso que ha tenido el vuelo (valores entre 10 y 99 minutos)
 > - ***fecha***: día de Febrero que tuvo lugar el vuelo
 
-El archivo airTribu.xlsx , es un excel con el resumen de todos los archivos.
+- El archivo airTribu.xlsx , es un excel con el resumen de todos los archivos.
 
 - Subir los archivos a HDFS, se creará una ruta para este ejercicio, y en esta ruta habrá una carpeta para cada archivo. 
 Todos los archivos deben ser subidos ejecutando un único fichero.sh
