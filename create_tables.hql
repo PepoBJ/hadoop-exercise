@@ -36,19 +36,19 @@ LOCATION '/user/maria_dev/upload/data/delay';
 -------------------------------------------------------------------------------------------------------
 
 --------------------------------------- CREATE VIEWS --------------------------------------------------
-CREATE VIEW v_flight_delay AS
+CREATE VIEW IF NOT EXISTS v_flight_delay AS
 SELECT airplane_code, delay_time, row_number() over() as delay_row_number
 FROM t_flight_delay;
 
-CREATE VIEW v_february_log AS
+CREATE VIEW IF NOT EXISTS v_february_log AS
 SELECT airplane_code, day_number, '2020-02' AS date_log, row_number() over() as february_row_number
 FROM t_february_log;
 
-CREATE VIEW v_flight AS
+CREATE VIEW IF NOT EXISTS v_flight AS
 SELECT airplane_code, country_origin_code, country_target_code, row_number() over() as flight_row_number
 FROM t_flight;
 
-CREATE VIEW v_flight_origin_target_country AS
+CREATE VIEW IF NOT EXISTS v_flight_origin_target_country AS
 SELECT DISTINCT f.airplane_code, f.country_origin_code, c.country_name AS country_origin_name,
        f.country_target_code, c2.country_name AS country_target_name, f.flight_row_number
 FROM v_flight f
