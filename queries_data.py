@@ -35,7 +35,7 @@ print('> [+] Consolidated table with countries with delayed flights:')
 country_delay_flight_df = spark.sql('SELECT country_origin_code, country_origin_name, avg(delay_time) as delay_time FROM t_flight_history GROUP BY country_origin_code, country_origin_name ORDER BY delay_time DESC')
 country_delay_flight_df.show(50, False)
 
-print('\n\n Writing the consolidated table <indra_exercise.t_take_off_arrive_flight> in HIVE...')
+print('\n\nWriting the consolidated table <indra_exercise.t_take_off_arrive_flight> in HIVE...')
 take_arrive_country_df.write.mode("overwrite").saveAsTable("indra_exercise.t_take_off_arrive_flight")
 print('Writing the consolidated table <indra_exercise.t_number_time_flight> in HIVE...')
 number_flight_time_df.write.mode("overwrite").saveAsTable("indra_exercise.t_number_time_flight")
