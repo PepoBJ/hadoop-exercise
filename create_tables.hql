@@ -1,5 +1,5 @@
 ---------------------------------------------- DATABASE --------------------------------------------
-CREATE DATABASE indra_exercise;
+CREATE DATABASE IF NOT EXISTS indra_exercise;
 USE indra_exercise;
 -----------------------------------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS t_flight_history (
     date_log VARCHAR(7)
 );
 
-INSERT INTO TABLE t_flight_history
+INSERT OVERRIDE TABLE t_flight_history
 SELECT fot.airplane_code, fot.country_origin_code, fot.country_origin_name,
        fot.country_target_code, fot.country_target_name, d.delay_time,
        fl.day_number,  fl.date_log
@@ -85,5 +85,5 @@ ON fot.airplane_code = fl.airplane_code AND fot.flight_row_number = fl.february_
 
 
 --------------------------------------------- QUERY TEST------------------------------------------------
-SELECT * FROM t_flight_history
+SELECT * FROM t_flight_history LIMIT 10;
 --------------------------------------------------------------------------------------------------------
