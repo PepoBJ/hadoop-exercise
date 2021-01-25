@@ -13,7 +13,6 @@ arrive_df.show(5, False)
 country_df = spark.sql('SELECT country_code, country_name FROM t_country')
 
 take_arrive_country_df = country_df.join(take_off_df, on='country_code', how='left').join(arrive_df, on='country_code', how='left').orderBy('country_name')
-print('imprimiendo...')
 take_arrive_country_df.show(50, False)
 
 number_flight_df = spark.sql('SELECT date_log, day_number, count(*) as number_flight FROM t_flight_history GROUP BY day_number, date_log ORDER BY number_flight DESC')
