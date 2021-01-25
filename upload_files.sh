@@ -12,4 +12,4 @@ hdfs dfs -put -f ./data/retrasos.dat /user/maria_dev/upload/data/delay/
 echo "Upload dates..."
 hdfs dfs -mkdir -p /user/maria_dev/upload/data/date/
 hdfs dfs -put -f ./data/fecha.dat /user/maria_dev/upload/data/date/
-echo "done"
+echo "Done."
