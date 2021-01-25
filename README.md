@@ -28,5 +28,64 @@ Todos los archivos deben ser subidos ejecutando un único fichero.sh
 - Agregar un resumen con toda la información de valor que consideréis. 
 - proponer que se podría hacer con estos datos
 
-## 2. Ejecución
+## 2. Ejecución (paso a paso)
 ---------------
+1. Subir archivos a HDFS:
+    - Los archivos se suben a la ruta: ***/user/maria_dev/upload/data/***
+    - Ejecutar en la terminal:
+
+    ```shell
+    chmod +x upload_files.sh
+    ./upload_files.sh
+    ```
+
+2. Creación de las tablas en HIVE
+    - Creará la BD HIVE ***indra_exercise*** y las tablas correspondientes
+    - Ejecutar en la terminal:
+
+    ```shell
+    hive -f create_tables.hql
+    ```
+
+3. Ejecución del script PYSPARK
+    - Creará las tablas con la información relevante.
+    - Ejecutar en la terminal:
+
+    ```shell
+    export PYTHONIOENCODING=utf8  #Support Utf-8
+    spark-submit queries_data.py
+    ```
+
+## 3. Ejecución (lotes)
+---------------
+1. Para ejecutar todos los pasos anteriores en un solo fichero ***sh***:
+
+    ```shell
+    chmod +x upload_files.sh
+    chmod +x setup.sh
+    ./setup.sh
+    ```
+
+## 4. Resultados
+---------------
+- Base de datos ***indra_exercise***
+
+    | Database      |
+    | ------------- |
+    | indra_exercise|
+- Tablas y vistas creadas
+    | Name          | Tipo           | Descripción  |
+    | ------------- |:-------------:| -----:|
+    | t_country  | TABLE | Tabla de paises  |
+    |t_february_log | TABLE | Tabla de las fechas de los vuelos (Febrero)  |
+    |t_flight | TABLE   | Tabla de vuelos - origin / destino  |
+    |t_flight_delay | TABLE | Tabla de retrasos de los vuelos  |
+    |v_february_log | VIEW | Vista con los días de los vuelos (febrero)  |
+    |v_flight | VIEW   | Vista con los vuelos, origen/destino (rank) |
+    |v_flight_delay | VIEW | Vista con los retrasos por vuelo (rank) |
+    |v_flight_origin_target_country | VIEW | Vista con los nombre de los paises origen/destino de los vuelos (rank) |
+    |t_flight_history | TABLE   | Tabla consolidada de vuelos, país origin/destino, retraso y fecha  |
+    |t_delay_country_flight | TABLE | Tabla de promedio de retrasos de vuelos por paises  |
+    |t_number_time_flight | TABLE   | Tabla consolidada de el número de vuelos y promedio de retraso por fecha  |
+    |t_take_off_arrive_flight | TABLE   | Tabla consolidada de despegues y llegadas por país  |
+    
