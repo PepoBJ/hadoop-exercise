@@ -71,7 +71,9 @@ CREATE TABLE IF NOT EXISTS t_flight_history (
     date_log VARCHAR(7)
 );
 
-INSERT OVERRIDE TABLE t_flight_history
+TRUNCATE TABLE t_flight_history;
+
+INSERT INTO TABLE t_flight_history
 SELECT fot.airplane_code, fot.country_origin_code, fot.country_origin_name,
        fot.country_target_code, fot.country_target_name, d.delay_time,
        fl.day_number,  fl.date_log
