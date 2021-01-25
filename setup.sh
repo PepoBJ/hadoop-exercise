@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo '> UPLOAD FILES TO HDFS'
-./upload
+./upload.sh
 
 echo '> CREATE TABLES HIVE'
 hive -f create_tables.sql;
