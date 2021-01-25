@@ -1,12 +1,14 @@
 #!/bin/bash
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
 
-echo '> UPLOAD FILES TO HDFS'
+printf "${GREEN}> UPLOAD FILES TO HDFS${NC}"
 ./upload_files.sh
 
-echo '> CREATE TABLES HIVE'
+printf "${GREEN}> CREATE TABLES HIVE${NC}"
 hive -f create_tables.hql;
-echo 'Done.'
+echo "Done."
 
-echo '> EXECUTE QUERIES IN SPARK'
+printf "${GREEN}> EXECUTE QUERIES IN SPARK${NC}"
 export PYTHONIOENCODING=utf8
 spark-submit queries_data.py
