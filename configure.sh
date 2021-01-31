@@ -5,6 +5,6 @@
 # pip install jupyter
 # chmod +x configure.sh
 
-IPYTHON_OPTS="notebook --port 8889 \
+PYSPARK_DRIVER_PYTHON_OPTS="notebook --port 8889 \
 --notebook-dir='/usr/hdp/current/spark-client/' \
 --ip='*' --no-browser" pyspark
