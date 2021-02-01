@@ -5,16 +5,16 @@ print('Initializing job...')
 spark = SparkSession.builder.enableHiveSupport().getOrCreate()
 spark.sql('use air_tribu')
 
-fligh_history_df = spark.sql('SELECT * FROM t_flight_history')
+flight_history_df = spark.sql('SELECT * FROM t_flight_history')
 
 print('> The countries with the most take-offs:')
-take_off_df = fligh_history_df.groupBy('country_origin_code').agg(count('*').alias('take_off')) \
+take_off_df = flight_history_df.groupBy('country_origin_code').agg(count('*').alias('take_off')) \
                 .select(col('country_origin_code').alias('country_code'), col('take_off')) \
                 .orderBy(desc('take_off'))
 take_off_df.show(5, False)
 
 print('> The countries with the most arrivals:')
-arrive_df =  fligh_history_df.groupBy('country_target_code').agg(count('*').alias('arrive')) \
+arrive_df =  flight_history_df.groupBy('country_target_code').agg(count('*').alias('arrive')) \
                 .select(col('country_target_code').alias('country_code'), col('arrive')) \
                 .orderBy(desc('arrive'))
 arrive_df.show(5, False)
@@ -28,13 +28,13 @@ take_arrive_country_df = country_df.join(take_off_df, on='country_code', how='le
 take_arrive_country_df.show(50, False)
 
 print('> The days with more and less flights:')
-number_flight_df = fligh_history_df.groupBy('day_number').agg(count('*').alias('number_flight')) \
+number_flight_df = flight_history_df.groupBy('day_number').agg(count('*').alias('number_flight')) \
                     .select(col('day_number'), col('number_flight')) \
                     .orderBy(desc('number_flight'))
 number_flight_df.show(5, False)
 
 print('> The days with the most and least delays:')
-flight_time_df = fligh_history_df.groupBy('day_number').agg(avg('delay_time').alias('delay_time')) \
+flight_time_df = flight_history_df.groupBy('day_number').agg(avg('delay_time').alias('delay_time')) \
                     .select(col('day_number'), col('delay_time')) \
                     .orderBy(desc('delay_time'))
 flight_time_df.show(5, False)
@@ -44,7 +44,7 @@ number_flight_time_df = number_flight_df.join(flight_time_df, on='day_number', h
 number_flight_time_df.show(50, False)
 
 print('> [+] Consolidated table with countries with delayed flights:')
-country_delay_flight_df = fligh_history_df.groupBy('country_origin_code', 'country_origin_name') \
+country_delay_flight_df = flight_history_df.groupBy('country_origin_code', 'country_origin_name') \
                             .agg(avg('delay_time').alias('delay_time')) \
                             .select(col('country_origin_code'), col('country_origin_name'), col('delay_time')) \
                             .orderBy(desc('delay_time'))
