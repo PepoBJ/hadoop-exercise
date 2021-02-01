@@ -41,7 +41,7 @@ SELECT airplane_code, delay_time, row_number() over() as delay_row_number
 FROM t_flight_delay;
 
 CREATE VIEW IF NOT EXISTS v_february_log AS
-SELECT airplane_code, day_number, '2020-02' AS date_log, row_number() over() as february_row_number
+SELECT airplane_code, day_number, row_number() over() as february_row_number
 FROM t_february_log;
 
 CREATE VIEW IF NOT EXISTS v_flight AS
@@ -68,7 +68,6 @@ CREATE TABLE IF NOT EXISTS t_flight_history (
     country_target_name VARCHAR(50),
     delay_time INT,
     day_number INT,
-    date_log VARCHAR(7)
 ) STORED AS PARQUET;
 
 TRUNCATE TABLE t_flight_history;
@@ -76,7 +75,7 @@ TRUNCATE TABLE t_flight_history;
 INSERT INTO TABLE t_flight_history
 SELECT fot.airplane_code, fot.country_origin_code, fot.country_origin_name,
        fot.country_target_code, fot.country_target_name, d.delay_time,
-       fl.day_number,  fl.date_log
+       fl.day_number,
 FROM v_flight_origin_target_country fot
 LEFT JOIN v_flight_delay d
 ON fot.airplane_code = d.airplane_code AND fot.flight_row_number = d.delay_row_number

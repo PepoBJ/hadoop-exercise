@@ -5,26 +5,38 @@ print('Initializing job...')
 spark = SparkSession.builder.enableHiveSupport().getOrCreate()
 spark.sql('use air_tribu')
 
+fligh_history_df = spark.sql('SELECT * FROM t_flight_history')
+
 print('> The countries with the most take-offs:')
-take_off_df = spark.sql('SELECT country_origin_code as country_code, count(*) as take_off FROM t_flight_history GROUP BY country_origin_code ORDER BY take_off DESC')
+take_off_df = fligh_history_df.groupBy('country_origin_code').agg(count('*').alias('take_off')) \
+                .select(col('country_origin_code').alias('country_code'), col('take_off')) \
+                .orderBy(desc('take_off'))
 take_off_df.show(5, False)
 
 print('> The countries with the most arrivals:')
-arrive_df =  spark.sql('SELECT country_target_code as country_code, count(*) as arrive FROM t_flight_history GROUP BY country_target_code ORDER BY arrive DESC')
+arrive_df =  fligh_history_df.groupBy('country_target_code').agg(count('*').alias('arrive')) \
+                .select(col('country_target_code').alias('country_code'), col('arrive')) \
+                .orderBy(desc('arrive'))
 arrive_df.show(5, False)
 
 print('> Consolidated table with take-offs and arrivals:')
 country_df = spark.sql('SELECT country_code, country_name FROM t_country')
 
-take_arrive_country_df = country_df.join(take_off_df, on='country_code', how='left').join(arrive_df, on='country_code', how='left').orderBy('country_name')
+take_arrive_country_df = country_df.join(take_off_df, on='country_code', how='left') \
+                        .join(arrive_df, on='country_code', how='left') \
+                        .orderBy('country_name')
 take_arrive_country_df.show(50, False)
 
 print('> The days with more and less flights:')
-number_flight_df = spark.sql('SELECT date_log, day_number, count(*) as number_flight FROM t_flight_history GROUP BY day_number, date_log ORDER BY number_flight DESC')
+number_flight_df = fligh_history_df.groupBy('day_number').agg(count('*').alias('number_flight')) \
+                    .select(col('day_number'), col('number_flight')) \
+                    .orderBy(desc('number_flight'))
 number_flight_df.show(5, False)
 
 print('> The days with the most and least delays:')
-flight_time_df = spark.sql('SELECT date_log, day_number, avg(delay_time) as delay_time FROM t_flight_history GROUP BY day_number, date_log ORDER BY delay_time DESC')
+flight_time_df = fligh_history_df.groupBy('day_number').agg(avg('delay_time').alias('delay_time')) \
+                    .select(col('day_number'), col('delay_time')) \
+                    .orderBy(desc('delay_time'))
 flight_time_df.show(5, False)
 
 print('> Consolidated table with flights and delays:')
@@ -32,7 +44,10 @@ number_flight_time_df = number_flight_df.join(flight_time_df, on=['date_log', 'd
 number_flight_time_df.show(50, False)
 
 print('> [+] Consolidated table with countries with delayed flights:')
-country_delay_flight_df = spark.sql('SELECT country_origin_code, country_origin_name, avg(delay_time) as delay_time FROM t_flight_history GROUP BY country_origin_code, country_origin_name ORDER BY delay_time DESC')
+country_delay_flight_df = fligh_history_df.groupBy('country_origin_code', 'country_origin_name') \
+                            .agg(avg('delay_time').alias('delay_time')) \
+                            .select(col('country_origin_code'), col('country_origin_name'), col('delay_time')) \
+                            .orderBy(desc('delay_time'))
 country_delay_flight_df.show(50, False)
 
 print('\n\nWriting the consolidated table <air_tribu.t_take_off_arrive_flight> in HIVE...')
