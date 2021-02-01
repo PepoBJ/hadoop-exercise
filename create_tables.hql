@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS t_country (
     country_code CHAR(3),
     country_name VARCHAR(50)
 )
-STORED AS PARQUET
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\073'
 LOCATION '/user/maria_dev/upload/data/country';
 
@@ -16,7 +15,6 @@ CREATE TABLE IF NOT EXISTS t_february_log (
     airplane_code CHAR(4),
     day_number INT
 )
-STORED AS PARQUET
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\137'
 LOCATION '/user/maria_dev/upload/data/date';
 
@@ -25,7 +23,6 @@ CREATE TABLE IF NOT EXISTS t_flight (
     country_origin_code CHAR(3),
     country_target_code CHAR(3)
 )
-STORED AS PARQUET
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\174'
 LOCATION '/user/maria_dev/upload/data/flight';
 
@@ -33,7 +30,6 @@ CREATE TABLE IF NOT EXISTS t_flight_delay (
     airplane_code CHAR(4),
     delay_time INT
 )
-STORED AS PARQUET
 ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.RegexSerDe'
 WITH SERDEPROPERTIES('input.regex'='([0-9]{4})([0-9]{2})')
 LOCATION '/user/maria_dev/upload/data/delay';
@@ -73,8 +69,7 @@ CREATE TABLE IF NOT EXISTS t_flight_history (
     delay_time INT,
     day_number INT,
     date_log VARCHAR(7)
-)
-STORED AS PARQUET;
+);
 
 TRUNCATE TABLE t_flight_history;
 
