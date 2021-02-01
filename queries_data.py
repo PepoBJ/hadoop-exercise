@@ -40,7 +40,7 @@ flight_time_df = fligh_history_df.groupBy('day_number').agg(avg('delay_time').al
 flight_time_df.show(5, False)
 
 print('> Consolidated table with flights and delays:')
-number_flight_time_df = number_flight_df.join(flight_time_df, on=['date_log', 'day_number'], how='full')
+number_flight_time_df = number_flight_df.join(flight_time_df, on='day_number', how='full')
 number_flight_time_df.show(50, False)
 
 print('> [+] Consolidated table with countries with delayed flights:')
