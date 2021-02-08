@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS t_flight_history (
     country_target_code CHAR(3),
     country_target_name VARCHAR(50),
     delay_time INT,
-    day_number INT,
+    day_number INT
 );
 
 TRUNCATE TABLE t_flight_history;
@@ -75,7 +75,7 @@ TRUNCATE TABLE t_flight_history;
 INSERT INTO TABLE t_flight_history
 SELECT fot.airplane_code, fot.country_origin_code, fot.country_origin_name,
        fot.country_target_code, fot.country_target_name, d.delay_time,
-       fl.day_number,
+       fl.day_number
 FROM v_flight_origin_target_country fot
 LEFT JOIN v_flight_delay d
 ON fot.airplane_code = d.airplane_code AND fot.flight_row_number = d.delay_row_number
