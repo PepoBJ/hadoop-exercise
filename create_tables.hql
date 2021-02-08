@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS t_flight_history (
     country_target_name VARCHAR(50),
     delay_time INT,
     day_number INT,
-) STORED AS PARQUET;
+);
 
 TRUNCATE TABLE t_flight_history;
 
